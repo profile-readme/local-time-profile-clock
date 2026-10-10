@@ -1,0 +1,25 @@
+local-time-profile-clock
+Copyright (C) 2026 Aesthetic Vulpes (github.com/didvc)
+https://github.com/profile-readme/local-time-profile-clock
+
+Source code is licensed under the GNU Affero General Public License v3.0 only
+(AGPL-3.0-only). Full text: LICENSE. Each source file carries an
+SPDX-License-Identifier header.
+
+If you run a modified version of this software as a network service, the AGPL
+requires you to offer the corresponding source code to its users.
+
+Time zone data: the clock uses the IANA time zone database through the
+JavaScript Intl API of the runtime it runs on (Cloudflare Workers in
+production). The database itself is not bundled with this repository; it is in
+the public domain.
+
+Third-party code: none is bundled. The project has no runtime or build
+dependencies. Wrangler (Cloudflare) is an optional external tool used during
+development and is not distributed with this repository.
+
+Trademarks: GitHub is a trademark of GitHub, Inc. Cloudflare and Cloudflare
+Pages are trademarks of Cloudflare, Inc. This project is not affiliated with,
+endorsed by or sponsored by either company.
+
+If you deploy your own copy, replace the copyright holder in site.config.json.
