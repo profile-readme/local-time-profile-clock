@@ -21,7 +21,8 @@ export const OPTION_GROUPS = [
       ["digital, analog", "Clock style (default digital)."],
       ["12h, 24h", "Hour format for the digital clock (default 24h)."],
       ["seconds", "Show seconds (a second hand on the analog clock)."],
-      ["size-N", "Size in pixels, 16 to 96 (default 40)."],
+      ["size-N", "Size in pixels, 16 to 96 (default 40); also in rem, e.g. size-2rem (1rem = 16px)."],
+      ["px", "Pin the image to exact pixels. By default it is sized in rem, so it grows with the reader's browser font size."],
     ],
   },
   {
@@ -43,6 +44,7 @@ export const OPTION_GROUPS = [
       ["border-N", "Card border in pixels, 0 to 8; implies card."],
       ["color-RRGGBB", "Accent and time color as 3 or 6 hex digits without #."],
       ["auto, light, dark, transparent", "Theme (default auto)."],
+      ["warm", "Use the warm readmes palette (cream and cocoa) instead of GitHub's own text colors, which are the default."],
     ],
   },
 ];

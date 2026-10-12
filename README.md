@@ -105,7 +105,8 @@ notice naming the position of the unknown option.
 | `digital`, `analog` | Clock style (default `digital`) |
 | `12h`, `24h` | Hour format for the digital clock (default `24h`) |
 | `seconds` | Show seconds, or a second hand on the analog clock |
-| `size-N` | Size in pixels from 16 to 96 (default 40) |
+| `size-N`, `size-Nrem` | Size in pixels from 16 to 96 (default 40) |
+| `px` | Pin exact pixels instead of rem (see below) |
 
 ### Annotation
 
@@ -130,6 +131,15 @@ notice naming the position of the unknown option.
 | `border-N` | Card border in pixels from 0 to 8 |
 | `color-RRGGBB` | Accent and time color in hex, without `#` |
 | `auto`, `light`, `dark`, `transparent` | Theme (default `auto`) |
+| `warm` | Warm readmes palette instead of GitHub's own text colors (default) |
+
+### Sizing in rem
+
+Every clock is sized in rem, where 1rem is 16 pixels. With default browser settings it looks
+exactly like a pixel size. When a reader has raised the default font size in their browser,
+often to make text easier to read, the clock grows with it, just like the text around it.
+You can also write sizes in rem, as in `size-3rem`. Add `px` when a clock must keep an exact
+pixel size, for example to line up with other images in a row.
 
 ## The status line
 

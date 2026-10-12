@@ -88,3 +88,16 @@ test("help and agents pages", async () => {
   const md = await (await servePage(new Request("https://readmes.pages.dev/clock/agents"), "agents")).text();
   assert.match(md, /GET https:\/\/readmes\.pages\.dev\/clock/);
 });
+
+test("rem sizing by default, px option, rem size tokens", async () => {
+  assert.match(await svg("asia-tokyo"), /^<svg[^>]*width="[\d.]+rem" height="[\d.]+rem"/);
+  assert.match(await svg("asia-tokyo/px"), /^<svg[^>]*width="\d+" height="\d+" viewBox/);
+  assert.equal(parseOptions(["size-3rem"]).opts.size, 48);
+});
+
+test("default colors match GitHub's text; warm keeps the readmes palette", async () => {
+  const d = await svg("asia-tokyo");
+  assert.match(d, /--fg:#1f2328;--muted:#59636e;/);
+  assert.match(d, /--fg:#f0f6fc;--muted:#9198a1;/);
+  assert.match(await svg("asia-tokyo/warm"), /--fg:#f6e7dc;/);
+});

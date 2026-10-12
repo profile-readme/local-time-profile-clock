@@ -10,11 +10,22 @@ import { inWindow } from "./options.js";
 export const esc = (s) =>
   String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 const r1 = (n) => Math.round(n * 10) / 10;
+// Root size in rem (1rem = 16px) so the whole image follows the reader's browser font-size
+// setting; identical to pixels at the default 16px. The px option pins exact pixels instead.
+const dim = (n, px) => (px ? String(n) : `${Math.round((n / 16) * 10000) / 10000}rem`);
 const mod = (a, n) => ((a % n) + n) % n;
 
-const PALETTE = {
-  light: { bg: "#fff8f1", fg: "#3b2418", muted: "#6b4a38", line: "#ecd9c8", face: "#ffffff" },
-  dark: { bg: "#241e2b", fg: "#f6e7dc", muted: "#cdb8a8", line: "#3a3142", face: "#2c2533" },
+// Default: GitHub's own colors (text, canvas, border), so the image reads like the README around it.
+// An image cannot inherit the page's colors, so they are matched exactly. "warm" keeps the readmes palette.
+const PALETTES = {
+  github: {
+    light: { bg: "#ffffff", fg: "#1f2328", muted: "#59636e", line: "#d1d9e0", face: "#f6f8fa" },
+    dark: { bg: "#0d1117", fg: "#f0f6fc", muted: "#9198a1", line: "#3d444d", face: "#151b23" },
+  },
+  warm: {
+    light: { bg: "#fff8f1", fg: "#3b2418", muted: "#6b4a38", line: "#ecd9c8", face: "#ffffff" },
+    dark: { bg: "#241e2b", fg: "#f6e7dc", muted: "#cdb8a8", line: "#3a3142", face: "#2c2533" },
+  },
 };
 const MONO = 'ui-monospace,SFMono-Regular,Menlo,Consolas,"DejaVu Sans Mono",monospace';
 const SANS = 'ui-rounded,"Hiragino Maru Gothic ProN","Nunito","Segoe UI",system-ui,sans-serif';
@@ -141,6 +152,7 @@ export function renderClock(opts, now = new Date()) {
   }
 
   const vars = (p) => `--bg:${p.bg};--fg:${opts.color ? "#" + opts.color : p.fg};--muted:${p.muted};--line:${p.line};--face:${p.face};--accent:#${opts.color ?? "f08a3c"};`;
+  const PALETTE = PALETTES[opts.palette] ?? PALETTES.github;
   let theme = `svg{${vars(opts.theme === "dark" ? PALETTE.dark : PALETTE.light)}}`;
   if (opts.theme === "auto" || opts.theme === "transparent") theme += `@media (prefers-color-scheme:dark){svg{${vars(PALETTE.dark)}}}`;
   const fonts = `.big{font:600 ${S}px ${MONO};fill:var(--fg)}.sec{font:600 ${r1(S * 0.5)}px ${MONO};fill:var(--muted)}.ampm{font:700 ${r1(S * 0.32)}px ${SANS};fill:var(--muted)}.lbl{font:600 ${fs2}px ${SANS};fill:var(--muted)}text{font-variant-numeric:tabular-nums}`;
@@ -153,7 +165,7 @@ export function renderClock(opts, now = new Date()) {
   }
   const title = `Clock: ${city ? `local time in ${city}` : "local time"} (${offTxt})`;
   return (
-    `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="t">` +
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${dim(W, opts.px)}" height="${dim(H, opts.px)}" viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="t">` +
     `<!-- (c) ${esc(SITE.copyrightYear)} ${esc(SITE.copyrightHolder)} (${esc(SITE.copyrightUrl)}) -->` +
     `<title id="t">${esc(title)}</title><style>${theme}${fonts}${css}</style><defs>${defs}</defs>${bg}${body}</svg>`
   );
@@ -163,7 +175,7 @@ export function renderNotice(message) {
   const text = `clock: ${message} (see help)`;
   const W = Math.round(text.length * 7.2 + 24);
   return (
-    `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="28" viewBox="0 0 ${W} 28" role="img" aria-label="${esc(text)}">` +
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${dim(W)}" height="${dim(28)}" viewBox="0 0 ${W} 28" role="img" aria-label="${esc(text)}">` +
     `<title>${esc(text)}</title><rect width="${W}" height="28" rx="14" fill="#fde2e4"/>` +
     `<text x="${W / 2}" y="18.5" text-anchor="middle" fill="#9b2c3a" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="12">${esc(text)}</text></svg>`
   );
